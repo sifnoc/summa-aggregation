@@ -21,15 +21,12 @@ jobs:
           - 2376:2376
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Build
-      run: cargo build --verbose
+    - uses: actions/checkout@v3
 
     - name: Run tests
       env:
         DOCKER_HOST: tcp://localhost:2376
-      run: cargo test --feature docker
+      run: cargo test --features docker
 
     - name: Clean up
       if: always()
