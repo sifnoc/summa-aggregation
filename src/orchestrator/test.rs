@@ -50,11 +50,11 @@ async fn test_none_exist_worker() {
     assert_eq!("Empty mini tree inputs", empty_mini_tree_error.to_string());
 }
 
-#[cfg(feature = "docker")]
+// #[cfg(feature = "docker")]
 #[tokio::test]
 async fn test_with_containers() {
     let spawner = LocalSpawner::new(
-        "summa-aggregation".to_string(),
+        "summadev/summa-aggregation-mini-tree:latest".to_string(),
         "orchestrator_test".to_string(),
     );
 
@@ -66,8 +66,10 @@ async fn test_with_containers() {
         ],
     );
     let aggregation_merkle_sum_tree = orchestrator.create_aggregation_mst(2).await.unwrap();
+    // Sleep 2 seconds for the container to be ready
+    tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
     assert_eq!(16, aggregation_merkle_sum_tree.mini_tree(0).entries().len());
-    assert_eq!(16, aggregation_merkle_sum_tree.mini_tree(0).entries().len());
+    assert_eq!(16, aggregation_merkle_sum_tree.mini_tree(1).entries().len());
 }
 
 #[cfg(feature = "docker-swarm")]
@@ -88,5 +90,5 @@ async fn test_with_swarm_service() {
     );
     let aggregation_merkle_sum_tree = orchestrator.create_aggregation_mst(2).await.unwrap();
     assert_eq!(16, aggregation_merkle_sum_tree.mini_tree(0).entries().len());
-    assert_eq!(16, aggregation_merkle_sum_tree.mini_tree(0).entries().len());
+    assert_eq!(16, aggregation_merkle_sum_tree.mini_tree(1).entries().len());
 }

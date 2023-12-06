@@ -1,0 +1,36 @@
+name: Aggregation Test
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: ["*"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+        ports:
+          - 2376:2376
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build
+      run: cargo build --verbose
+
+    - name: Run tests
+      env:
+        DOCKER_HOST: tcp://localhost:2376
+      run: cargo test --feature docker
+
+    - name: Clean up
+      if: always()
+      run: docker system prune -af
