@@ -141,7 +141,6 @@ impl ExecutorSpawner for LocalSpawner {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::sync::atomic::AtomicUsize;
 
     #[tokio::test]
     async fn test_executor_spawner() {

@@ -13,13 +13,6 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    # services:
-    #   docker:
-    #     image: docker:19.03.12
-    #     options: --privileged
-    #     ports:
-    #       - 2376:2376
-
     steps:
     - uses: actions/checkout@v3
 
@@ -28,7 +21,3 @@ jobs:
     
     - name: Run tests
       run: cargo test --features docker
-
-    # - name: Clean up
-    #   if: always()
-    #   run: docker system prune -af
