@@ -13,36 +13,22 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
-    services:
-      docker:
-        image: docker:19.03.12
-        options: --privileged
-        ports:
-          - 2376:2376
+    # services:
+    #   docker:
+    #     image: docker:19.03.12
+    #     options: --privileged
+    #     ports:
+    #       - 2376:2376
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Docker Check
-      run: docker version
-
-    - name: Docker info
-      run: docker info
-
-    - name: Docker build
-      run: docker build -t summadev/summa-aggregation-mini-tree .
-
-    - name: Docker images
-      run: docker images
+    - name: Pull mini-tree image
+      run: docker pull summadev/summa-aggregation-mini-tree:latest
     
-    - name: Docker Images on service
-      env:
-        DOCKER_HOST: tcp://localhost:2376
-      run: docker images
-
     - name: Run tests
       run: cargo test --features docker
 
-    - name: Clean up
-      if: always()
-      run: docker system prune -af
+    # - name: Clean up
+    #   if: always()
+    #   run: docker system prune -af
